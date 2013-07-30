@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import edu.kit.iti.algo2.textindexing.IIndex;
 import edu.kit.iti.algo2.textindexing.searchengine.SearchResult;
@@ -43,11 +44,11 @@ public class InvertedIndex implements Searchable, Serializable, IIndex {
 		List<Occurrence> list = index.get(word);
 
 		SearchResult sr = new SearchResult();
-		if (list.isEmpty())
+		if (list == null || list.isEmpty())
 			return sr;
 
 		for (Occurrence occurrence : list) {
-			sr.add(occurrence);
+			sr.add(occurrence, word);
 		}
 		return sr;
 	}
@@ -108,6 +109,11 @@ public class InvertedIndex implements Searchable, Serializable, IIndex {
 
 	public void setInternal(Map<String, List<Occurrence>> internal) {
 		index = internal;
+	}
+
+	@Override
+	public Set<String> keywords() {
+		return index.keySet();
 	}
 
 }
